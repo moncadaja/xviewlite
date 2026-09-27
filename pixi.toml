@@ -1,7 +1,7 @@
 [workspace]
 preview = ["pixi-build"]
 channels = ["conda-forge"]
-name = "xviewlite"
+name = "pixi_xview"
 platforms = ["linux-64"]
 version = "0.1.0"
 
@@ -15,12 +15,18 @@ databroker = "==2.0.0b64"
 #pyqt6 = ">=6.11.0"
 pyqt = ">=5.15"
 setuptools = "<81"
+mp-api = ">=0.46.5"
 xraylarch = "==2025.1.1"
 slackclient = "==2.9.3"
 dropbox = "==11.29.0"
-opencv = "==4.10.0"
+opencv = "*"
 tiled = "==0.1.6"
 pandas = "==2.3.0"
+matplotlib = "==3.9.1"
+larixite = "<=2024.10.0"
+numpy = "<=1.26.4"
+
+
 
 
 [pypi-dependencies]
@@ -30,6 +36,7 @@ xas = { git = "https://github.com/NSLS2/issxas.git", branch = "main"}
 issfactortools = { git = "https://github.com/NSLS-II-ISS/issfactortools.git", branch = "main"}
 isscloudtools = { git = "https://github.com/NSLS2/isscloudtools.git", branch = "master"}
 isstools = { git = "https://github.com/NSLS2/isstools.git", branch = "main"}
+
 pymcr = "*"
 bluesky-widgets = "*"
 
