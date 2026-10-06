@@ -1,0 +1,55 @@
+--- a/xview/widgets/widget_xview_data.py
++++ b/xview/widgets/widget_xview_data.py
+@@ -22,6 +22,7 @@
+ import copy
+ from xview.dialogs.FileMetadataDialog import FileMetadataDialog
+ from larch.io import read_ascii
++from xview._metadata import scan_metadata
+ 
+ if platform == 'darwin':
+     ui_path = resource_filename('ui/ui_xview_data-mac.ui')
+@@ -438,11 +439,7 @@
+                         md = self.db[uid]['start']
+                     else:
+                         larch_group = read_ascii(filepath)
+-                        md = dict(larch_group.attrs)
+-                        if "ISS (8-ID)" in md.values():
+-                            md['e0'] = larch_group.attrs.scan_edge_energy_ev
+-                        elif "QAS" in md.values():
+-                            md['e0'] = larch_group.attrs.e0
++                        md = scan_metadata(larch_group.attrs)
+             except KeyError:
+                 try:
+                     uid = header[header.find('UID:') + 5:header.find('\n', header.find('UID:'))]
+@@ -450,11 +447,7 @@
+                         md = self.db[uid]['start']
+                     else:
+                         larch_group = read_ascii(filepath)
+-                        md = dict(larch_group.attrs)
+-                        if "ISS (8-ID)" in md.values():
+-                            md['e0'] = larch_group.attrs.scan_edge_energy_ev
+-                        elif "QAS" in md.values():
+-                            md['e0'] = larch_group.attrs.e0
++                        md = scan_metadata(larch_group.attrs)
+                 except:
+                     md = {}
+                     pass
+--- /dev/null
++++ b/xview/_metadata.py
+@@ -0,0 +1,16 @@
++"""Adapt scan metadata without depending on Larch's header capitalization."""
++
++
++def scan_metadata(attrs):
++    """Preserve header keys and provide the canonical edge energy when present."""
++    metadata = dict(attrs)
++    fields = {key.casefold(): value for key, value in metadata.items()}
++    if "ISS (8-ID)" in metadata.values():
++        edge_key = "scan_edge_energy_ev"
++    elif "QAS" in metadata.values():
++        edge_key = "e0"
++    else:
++        return metadata
++    if edge_key in fields:
++        metadata["e0"] = fields[edge_key]
++    return metadata

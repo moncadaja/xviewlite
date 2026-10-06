@@ -1,0 +1,47 @@
+--- a/xas/file_io.py
++++ b/xas/file_io.py
+@@ -23,7 +23,7 @@
+         df=pd.DataFrame()
+         keys = ['times', 'timens', 'counter', 'adc']
+         if os.path.isfile(filename):
+-            df_raw = pd.read_table(filename, delim_whitespace=True, comment='#', names=keys, index_col=False)
++            df_raw = pd.read_table(filename, sep=r"\s+", comment='#', names=keys, index_col=False)
+             df['timestamp'] = df_raw['times'] + 1e-9 * df_raw['timens']
+             df['adc'] = df_raw['adc'].apply(lambda x: (int(x, 16) >> 8) - 0x40000 if (int(x, 16) >> 8) > 0x1FFFF else int(x, 16) >> 8) * 7.62939453125e-05
+             return df
+@@ -34,7 +34,7 @@
+         df = pd.DataFrame()
+         keys = ['times', 'timens', 'encoder', 'counter', 'di']
+         if os.path.isfile(filename):
+-            df_raw = pd.read_table(filename, delim_whitespace=True, comment='#', names=keys, index_col=False)
++            df_raw = pd.read_table(filename, sep=r"\s+", comment='#', names=keys, index_col=False)
+             df['timestamp'] = df_raw['times'] + 1e-9 * df_raw['timens']
+             df['encoder'] = df_raw['encoder'].apply(lambda x: int(x) if int(x) <= 0 else -(int(x) ^ 0xffffff - 1))
+             return df
+@@ -44,7 +44,7 @@
+     def load_trig_trace(filename=''):
+         keys = ['times', 'timens', 'encoder', 'counter', 'di']
+         if os.path.isfile(filename):
+-            df = pd.read_table(filename, delim_whitespace=True, comment='#', names=keys,
++            df = pd.read_table(filename, sep=r"\s+", comment='#', names=keys,
+                                index_col=False)
+             df['timestamp'] = df['times'] + 1e-9 * df['timens']
+             df = df.iloc[::2]
+@@ -240,7 +240,7 @@
+         raise IOError(f'The file {filename} does not exist.')
+     header = read_header(filename)
+     keys = header[header.rfind('#'):][1:-1].split()
+-    df = pd.read_csv(filename, delim_whitespace=True, comment='#', names=keys, index_col=False)
++    df = pd.read_csv(filename, sep=r"\s+", comment='#', names=keys, index_col=False)
+     if 'energy' in [i.lower() for i in df.columns]: # i am sorry /// Denis
+         df = df.sort_values('energy'.lower())
+     return df, header
+@@ -267,7 +267,7 @@
+         raise IOError(f'The file {filename} does not exist.')
+     header = read_header(filename)
+     keys = header[header.rfind('#'):][1:-1].split()
+-    df = pd.read_csv(filename, delim_whitespace=True, comment='#', names=keys, index_col=False)
++    df = pd.read_csv(filename, sep=r"\s+", comment='#', names=keys, index_col=False)
+ 
+     energy_key = None
+     for col in df.columns:

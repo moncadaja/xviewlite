@@ -1,0 +1,20 @@
+--- a/xview/widgets/widget_xview_rixs.py
++++ b/xview/widgets/widget_xview_rixs.py
+@@ -12,7 +12,7 @@
+ 
+ from sys import platform
+ from pathlib import Path
+-from matplotlib import cm
++from matplotlib import colormaps
+ import json
+ 
+ from matplotlib.figure import Figure
+@@ -147,7 +147,7 @@
+         # self.rixs_view = self.rixs_plot_area.addViewBox(lockAspect=False, invertY=True)
+         # self.rixs_view.setBackgroundColor('w')
+ 
+-        cmap = cm.get_cmap('jet')
++        cmap = colormaps['jet']
+         lut = (cmap(np.linspace(0, 1, 256))[:, :3] *255).astype(np.ubyte)
+         self.rixs_image_item = pg.ImageItem(lut=lut)
+         self.rixs_plot_item.addItem(self.rixs_image_item)

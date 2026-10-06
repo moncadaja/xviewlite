@@ -10,36 +10,36 @@ version = "0.1.0"
 start = "unset PYTHONPATH && export IPYTHONDIR=$PIXI_PROJECT_ROOT/.ipython && ipython --profile=default -i launch_xview_gui.py"
 
 [dependencies]
-python = ">=3.12,<3.14"
-databroker = "==2.0.0b64"
-#pyqt6 = ">=6.11.0"
-pyqt = ">=5.15"
-setuptools = "<81"
-mp-api = ">=0.46.5"
-xraylarch = "==2025.1.1"
-slackclient = "==2.9.3"
-dropbox = "==11.29.0"
-opencv = "*"
-tiled = "==0.1.6"
-pandas = "==2.3.0"
-matplotlib = "==3.9.1"
-larixite = "<=2024.10.0"
-numpy = "<=1.26.4"
-
-
+python = ">=3.14.7,<3.15"
+databroker = ">=2.0.1,<3"
+pyqt = ">=5.15.11,<6"
+setuptools = ">=84.0.0,<85"
+mp-api = ">=0.46.5,<0.47"
+xraylarch = ">=2026.3.1,<2027"
+slackclient = ">=2.9.3,<3"
+dropbox = ">=12.2.2,<13"
+opencv = ">=5.0.0,<6"
+tiled = ">=0.1.6,<0.2"
+pandas = ">=3.0.6,<4"
+matplotlib = ">=3.11.2,<4"
+larixite = ">=2026.1.0,<2027"
+numpy = ">=2.5.3,<3"
+# Required by wxutils and Larch but omitted from their Conda dependencies.
+jeepney = ">=0.9.0,<0.10"
+mkl_fft = ">=2.3.2,<3"
 
 
 [pypi-dependencies]
+xview = { path = ".vendor/xview", editable = true }
+xas = { path = ".vendor/xas", editable = true }
+issfactortools = { path = ".vendor/issfactortools", editable = true }
+isscloudtools = { path = ".vendor/isscloudtools", editable = true }
+isstools = { path = ".vendor/isstools", editable = true }
 
-xview = { git = "https://github.com/NSLS-II-ISS/xview.git", branch = "main"}
-xas = { git = "https://github.com/NSLS2/issxas.git", branch = "main"}
-issfactortools = { git = "https://github.com/NSLS-II-ISS/issfactortools.git", branch = "main"}
-isscloudtools = { git = "https://github.com/NSLS2/isscloudtools.git", branch = "master"}
-isstools = { git = "https://github.com/NSLS2/isstools.git", branch = "main"}
-
-pymcr = "*"
-bluesky-widgets = "*"
+pymcr = ">=0.5.1, <0.6"
+bluesky-widgets = ">=0.0.18, <0.0.19"
+# Required by Larch's Sitka reader.
+sitka-spruce = ">=0.3, <0.4"
 
 [activation]
-scripts = [".pixi/setup-runtime.sh"]
-
+scripts = ["setup-runtime.sh"]

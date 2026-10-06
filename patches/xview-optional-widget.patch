@@ -1,0 +1,15 @@
+--- a/xview/xview.py
++++ b/xview/xview.py
+@@ -51,11 +51,9 @@
+         self.widget_data = widget_xview_data.UIXviewData(db=db, parent=self)
+         self.layout_data.addWidget(self.widget_data)
+ 
+-        try:
++        if widget_xview_wip is not None:
+             self.widget_wip = widget_xview_wip.UIXviewWIP(db=db, parent=self)
+             self.layout_wip.addWidget(self.widget_wip)
+-        except:
+-            print('it did not work')
+ 
+ 
+ 

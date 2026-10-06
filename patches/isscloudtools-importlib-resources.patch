@@ -1,0 +1,38 @@
+--- /dev/null
++++ b/isscloudtools/_resources.py
+@@ -0,0 +1,15 @@
++"""Keep packaged resources available for Qt for the lifetime of the process."""
++
++import atexit
++from contextlib import ExitStack
++from functools import cache
++from importlib.resources import as_file, files
++
++_resources = ExitStack()
++atexit.register(_resources.close)
++
++
++@cache
++def resource_filename(name):
++    """Return a filesystem path, extracting zipped resources when necessary."""
++    return str(_resources.enter_context(as_file(files(__package__).joinpath(name))))
+--- a/isscloudtools/iss_tracker.py
++++ b/isscloudtools/iss_tracker.py
+@@ -2,7 +2,7 @@
+ from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+ from matplotlib.figure import Figure
+ from PyQt5 import uic, QtCore
+-import pkg_resources
++from isscloudtools._resources import resource_filename
+ from glob import glob
+ import os
+ from historydict import HistoryDict
+@@ -10,7 +10,7 @@
+ from .initialize import get_gdrive_service
+ from .gdrive import folder_exists_in_root, create_folder, folder_exists, upload_file
+ 
+-ui_path = pkg_resources.resource_filename('isscloudtools', 'ui/Tracker.ui')
++ui_path = resource_filename('ui/Tracker.ui')
+ 
+ class ISSTracker(*uic.loadUiType(ui_path)):
+ 

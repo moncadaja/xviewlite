@@ -1,0 +1,41 @@
+{
+  "xview": {
+    "url": "https://github.com/NSLS-II-ISS/xview.git",
+    "rev": "9ca42e3f1ef4b02b3aa56202c4ebef6bf9a01867",
+    "patches": [
+      "patches/xview-importlib-resources.patch",
+      "patches/xview-matplotlib.patch",
+      "patches/xview-larch-metadata.patch",
+      "patches/xview-optional-widget.patch"
+    ]
+  },
+  "isscloudtools": {
+    "url": "https://github.com/NSLS2/isscloudtools.git",
+    "rev": "4b9da00380a3c56aa80b4772ac48dda363a11d7d",
+    "patches": [
+      "patches/isscloudtools-importlib-resources.patch"
+    ]
+  },
+  "issfactortools": {
+    "url": "https://github.com/NSLS-II-ISS/issfactortools.git",
+    "rev": "0f0f8e5fd3a3c46b801842c979d4505eb4b63516",
+    "patches": [
+      "patches/issfactortools-importlib-resources.patch"
+    ]
+  },
+  "isstools": {
+    "url": "https://github.com/NSLS2/isstools.git",
+    "rev": "547ca388d28b70ba270bcfc319266ec83dcb9e41",
+    "patches": [
+      "patches/isstools-importlib-resources.patch"
+    ]
+  },
+  "xas": {
+    "url": "https://github.com/NSLS2/issxas.git",
+    "rev": "169549a65919fcaa4a18b647b42ae828dfef5928",
+    "patches": [
+      "patches/xas-pandas.patch",
+      "patches/xas-numpy-flatten.patch"
+    ]
+  }
+}

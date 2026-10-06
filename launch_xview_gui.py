@@ -2,6 +2,10 @@ import databroker
 from PyQt5.QtWidgets import QApplication
 from PyQt5 import uic, QtCore
 import sys
+
+if QApplication.instance() is None:
+    QApplication.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+
 from xview import xview
 # from xview.spectra_db.db_io import get_spectrum_catalog
 import os
@@ -60,8 +64,7 @@ db_proc = None
 db_archive_catalog=None
 db_catalog=None
 
-app = QApplication(sys.argv)
-app.setAttribute(QtCore.Qt.AA_EnableHighDpiScaling, True)
+app = QApplication.instance() or QApplication(sys.argv)
 xview_gui = xview.XviewGui(db=db, db_proc=db_proc, db_archive_catalog=db_archive_catalog, db_catalog=db_catalog)
 # xview_gui = xview.XviewGui(db=None, db_proc=None, db_archive_catalog=None, db_catalog=None)
 

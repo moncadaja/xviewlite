@@ -83,3 +83,6 @@ target/
 # pixi environments
 .pixi/*
 !.pixi/config.toml
+
+# Reproducible patched dependency checkouts (see patches/sources.json).
+.vendor/

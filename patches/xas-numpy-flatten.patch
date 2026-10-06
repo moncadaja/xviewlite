@@ -1,0 +1,42 @@
+diff --git a/xas/xasproject.py b/xas/xasproject.py
+index c7ad4d0..e977b85 100644
+--- a/xas/xasproject.py
++++ b/xas/xasproject.py
+@@ -2,7 +2,6 @@ from PyQt5 import QtCore
+ import pandas as pd
+ from larch import Group as xafsgroup
+ from larch.xafs import pre_edge, autobk, mback, xftf
+-from larch import Interpreter
+ import numpy as np
+ import pickle
+ 
+@@ -11,7 +10,9 @@ import pickle
+ class XASDataSet:
+     _md = {}
+     _filename = ''
+-    _larch = Interpreter()
++    # Explicit output groups let us use Larch's Python API without starting
++    # its interpreter (which imports wx plotting and changes IPython's GUI).
++    _larch = None
+ 
+     def __init__(self, name=None, md=None, energy = None, mu=None,
+                  filename=None, datatype=None, process=True,
+@@ -115,16 +116,8 @@ class XASDataSet:
+             elif hasattr(e0_val, 'item'):
+                 e0_val = e0_val.item()
+ 
+-        # Find flat 1D indices to prevent 2D multi-dimensional array shape errors
+-        indices = np.flatnonzero(self.energy > e0_val)
+-        if len(indices) == 0:
+-            print("Warning: Could not find step index where energy > e0. Skipping flatten calculation.")
+-            return
+-            
+-        step_index = int(indices)
+-        zeros = np.zeros(step_index)
+-        ones = np.ones(self.energy.shape - step_index)
+-        step = np.concatenate((zeros, ones), axis=0)
++        # Apply the post-edge correction pointwise, including boundary edges.
++        step = self.energy > e0_val
+         diffline = (self.post_edge - self.pre_edge) / self.edge_step
+         self.flat = self.norm + step * (1 - diffline)
+ 

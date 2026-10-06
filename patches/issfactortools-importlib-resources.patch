@@ -1,0 +1,101 @@
+--- /dev/null
++++ b/issfactortools/_resources.py
+@@ -0,0 +1,15 @@
++"""Keep packaged resources available for Qt for the lifetime of the process."""
++
++import atexit
++from contextlib import ExitStack
++from functools import cache
++from importlib.resources import as_file, files
++
++_resources = ExitStack()
++atexit.register(_resources.close)
++
++
++@cache
++def resource_filename(name):
++    """Return a filesystem path, extracting zipped resources when necessary."""
++    return str(_resources.enter_context(as_file(files(__package__).joinpath(name))))
+--- a/issfactortools/dialogs/AddReferenceDialog.py
++++ b/issfactortools/dialogs/AddReferenceDialog.py
+@@ -1,7 +1,7 @@
+ from PyQt5 import uic, QtGui, QtCore
+-import pkg_resources
++from issfactortools._resources import resource_filename
+ 
+-ui_path = pkg_resources.resource_filename('issfactortools', 'dialogs/AddReferenceDialog2.ui')
++ui_path = resource_filename('dialogs/AddReferenceDialog2.ui')
+ 
+ class AddReferenceDialog(*uic.loadUiType(ui_path)):
+ 
+--- a/issfactortools/widgets/QDialog.py
++++ b/issfactortools/widgets/QDialog.py
+@@ -3,7 +3,7 @@
+ import sys
+ import numpy as np
+ import matplotlib.pyplot as plt
+-import pkg_resources
++from issfactortools._resources import resource_filename
+ import traceback
+ import math
+ import issfactortools.widgets.widget_mcr_overview
+--- a/issfactortools/widgets/widget_data_overview.py
++++ b/issfactortools/widgets/widget_data_overview.py
+@@ -3,7 +3,7 @@
+ import sys
+ import numpy as np
+ import matplotlib.pyplot as plt
+-import pkg_resources
++from issfactortools._resources import resource_filename
+ import traceback
+ import math
+ 
+@@ -20,7 +20,7 @@
+ 
+ from issfactortools.elements.svd import plot_svd_results, doSVD
+ 
+-ui_path = pkg_resources.resource_filename('issfactortools', 'ui/ui_data_overview.ui')
++ui_path = resource_filename('ui/ui_data_overview.ui')
+ 
+ class UIDataOverview(*uic.loadUiType(ui_path)):
+ 
+--- a/issfactortools/widgets/widget_main.py
++++ b/issfactortools/widgets/widget_main.py
+@@ -2,7 +2,7 @@
+ import re
+ import sys
+ import numpy as np
+-import pkg_resources
++from issfactortools._resources import resource_filename
+ import inspect
+ import math
+ import os
+@@ -25,7 +25,7 @@
+ from issfactortools.dialogs.AddReferenceDialog import AddReferenceDialog
+ 
+ 
+-ui_path = pkg_resources.resource_filename('issfactortools', 'ui/ui_main.ui')
++ui_path = resource_filename('ui/ui_main.ui')
+ 
+ 
+ constraints_obj_dict = { 'ConstraintNonneg' : ConstraintNonneg,
+--- a/issfactortools/widgets/widget_mcr_overview.py
++++ b/issfactortools/widgets/widget_mcr_overview.py
+@@ -3,7 +3,7 @@
+ import sys
+ import numpy as np
+ import matplotlib.pyplot as plt
+-import pkg_resources
++from issfactortools._resources import resource_filename
+ import traceback
+ import math
+ import issfactortools.widgets.QDialog
+@@ -25,7 +25,7 @@
+ from issfactortools.elements.svd import plot_svd_results, doSVD
+ 
+ 
+-ui_path = pkg_resources.resource_filename('issfactortools', 'ui/ui_main.ui')
++ui_path = resource_filename('ui/ui_main.ui')
+ 
+ class UIDataOverview(*uic.loadUiType(ui_path)):
+     def __init__(self, *args, **kwargs):
