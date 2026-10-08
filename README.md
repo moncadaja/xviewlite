@@ -2,6 +2,14 @@
 
 XAFS data analysis package.
 
+The existing PyQt application now includes an **XAS tools** tab with foil
+calibration, reference/sample alignment, deglitching, linear combination fitting,
+PCA, fluorescence self-absorption correction, and normalization comparison.
+Operations provide previews, plots, result tables and JSON export; corrections
+can be added as new project datasets with processing history.
+See [the Larch review and widget guide](docs/larch-review.md) for workflows,
+model assumptions, implementation notes and tests.
+
 Prepare the patched source dependencies, install the locked environment, then launch:
 
 ```bash

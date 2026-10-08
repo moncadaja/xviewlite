@@ -1,4 +1,7 @@
-from ._version import get_versions
+"""ISS XAFS analysis tools."""
+from importlib.metadata import PackageNotFoundError, version
 
-__version__ = get_versions()["version"]
-del get_versions
+try:
+    __version__ = version("xviewlite")
+except PackageNotFoundError:
+    __version__ = "0+unknown"

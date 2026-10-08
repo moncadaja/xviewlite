@@ -6,7 +6,9 @@
       "patches/xview-importlib-resources.patch",
       "patches/xview-matplotlib.patch",
       "patches/xview-larch-metadata.patch",
-      "patches/xview-optional-widget.patch"
+      "patches/xview-optional-widget.patch",
+      "patches/xview-reference-channel.patch",
+      "patches/xview-r-weight.patch"
     ]
   },
   "isscloudtools": {
@@ -35,7 +37,8 @@
     "rev": "169549a65919fcaa4a18b647b42ae828dfef5928",
     "patches": [
       "patches/xas-pandas.patch",
-      "patches/xas-numpy-flatten.patch"
+      "patches/xas-numpy-flatten.patch",
+      "patches/xas-larch-processing.patch"
     ]
   }
 }

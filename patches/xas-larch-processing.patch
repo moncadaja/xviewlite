@@ -1,0 +1,85 @@
+--- a/xas/xasproject.py
++++ b/xas/xasproject.py
+@@ -76,6 +76,7 @@
+                     self.edge_step = None
+ 
+             if xasdataset is not None:
++                self.flatten_method = getattr(xasdataset, 'flatten_method', 'legacy')
+                 self.clamp_hi = xasdataset.clamp_hi
+                 self.clamp_lo = xasdataset.clamp_lo
+                 self.kmin = xasdataset.kmin
+@@ -108,6 +109,9 @@
+         self.energy_deriv=(self.energy[1:]+self.energy[:-1])/2
+ 
+     def flatten(self):
++        if getattr(self, 'flatten_method', 'legacy') == 'larch':
++            self.flat = self.larch.flat.copy()
++            return
+         # Extract e0 safely if it gets passed as a 1-element numpy array
+         e0_val = self.e0
+         if hasattr(e0_val, '__len__') and not isinstance(e0_val, (str, bytes)):
+@@ -132,6 +136,7 @@
+         self.pre2 = self.larch.pre_edge_details.pre2
+         self.norm1 = self.larch.pre_edge_details.norm1
+         self.norm2 = self.larch.pre_edge_details.norm2
++        self.nnorm = self.larch.pre_edge_details.nnorm
+         self.e0 = self.larch.e0
+         self.pre_edge=self.larch.pre_edge
+         self.post_edge = self.larch.post_edge
+@@ -144,6 +149,8 @@
+                                                                            norm1=self.norm1, norm2=self.norm2, nnorm=self.nnorm)
+         self.norm = self.larch.norm
+         self.e0 = self.larch.e0
++        for key in ('pre1', 'pre2', 'norm1', 'norm2', 'nnorm'):
++            setattr(self, key, getattr(self.larch.pre_edge_details, key))
+         self.pre_edge=self.larch.pre_edge
+         self.post_edge = self.larch.post_edge
+         self.edge_step = self.larch.edge_step
+@@ -154,6 +161,7 @@
+         autobk(self.larch, group=self.larch,  _larch=self._larch)
+ 
+         self.chi = self.larch.chi
++        self.k = self.larch.k
+         self.bkg = self.larch.bkg
+         self.kmin = self.larch.autobk_details.kmin
+         self.kmax = self.larch.autobk_details.kmax
+@@ -179,15 +187,15 @@
+         #print('ft reporting')
+         #print(self.kmin_ft)
+         # xftf(self.larch, group=self.larch,  _larch=self._larch, kmin=self.kmin_ft, kmax=self.kmax)
+-        xftf(self.larch, group=self.larch, _larch=self._larch,kmin=self.kmin_ft, kmax=self.kmax_ft)
++        xftf(self.larch, group=self.larch, _larch=self._larch,
++             kmin=self.kmin_ft, kmax=self.kmax_ft, kweight=self.kweight)
+ 
+         self.r = self.larch.r
+         self.chir = self.larch.chir
+         self.chir_mag = self.larch.chir_mag
+-        self.chir_im = self.larch.chir_re
+-        self.chir_re = self.larch.chir_im
++        self.chir_im = self.larch.chir_im
++        self.chir_re = self.larch.chir_re
+         #self.chir_pha = self.larch.chir_pha
+-        self.kmax_ft = self.kmax
+         self.kwin = self.larch.kwin
+ 
+     def extract_ft_force(self, window={}):
+@@ -198,16 +206,15 @@
+         else:
+             window_type = window['window_type']
+             tapering = window['tapering']
+-            r_weight = window['r_weight']
+             # print('setting window')
+             xftf(self.larch, group=self.larch, _larch=self._larch,
+                  kmin=self.kmin_ft, kmax=self.kmax_ft, kweight=self.kweight,
+-                 window=window_type, dk=tapering,rweight=r_weight)
++                 window=window_type, dk=tapering)
+         self.r = self.larch.r
+         self.chir = self.larch.chir
+         self.chir_mag = self.larch.chir_mag
+-        self.chir_im = self.larch.chir_re
+-        self.chir_re = self.larch.chir_im
++        self.chir_im = self.larch.chir_im
++        self.chir_re = self.larch.chir_re
+         #self.chir_pha = self.larch.chir_phas
+         self.kwin = self.larch.kwin
+ 

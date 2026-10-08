@@ -1,1 +1,11 @@
-# List required packages in this file, one per line.
+# Install the sibling ISS repositories together; see ../compatibility/README.md.
+xview
+xas
+issfactortools
+isstools
+numpy>=1.26,<3
+pandas>=2.2,<4
+scipy>=1.12,<2
+matplotlib>=3.8,<4
+PyQt5>=5.15.11,<6
+xraylarch>=0.9.81
