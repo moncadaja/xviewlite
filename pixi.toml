@@ -1,4 +1,5 @@
 [workspace]
+requires-pixi = ">=0.82.1"
 preview = ["pixi-build"]
 channels = ["conda-forge"]
 name = "pixi_xview"
@@ -25,6 +26,7 @@ pandas = "==2.3.0"
 matplotlib = "==3.9.1"
 larixite = "<=2024.10.0"
 numpy = "<=1.26.4"
+pyzmq = ">=27.2.0,<28"
 
 
 
